@@ -1,16 +1,42 @@
-# This is a sample Python script.
+import pygame
+import math
+import random
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 800
+SCREEN_TITLE = 'SnakeSnack'
+clock = pygame.time.Clock()
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+class Game:
+    TICK_RATE = 60
+    is_game_over = False
+
+    def __init__(self, title, width, height):
+        self.title = title
+        self.width = width
+        self.height = height
+        self.game_screen = pygame.display.set_mode((width, height))
+        self.game_screen.fill([0, 0, 0])
+        pygame.display.set_caption(title)
+
+    def run_game_loop(self):
+        is_game_over = False
+
+        while not is_game_over:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    is_game_over = True
+            pygame.draw.rect(self.game_screen, [255, 255, 255], [400, 400, 100, 100])
+            pygame.display.update()
+            clock.tick(self.TICK_RATE)
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+# Start pygame
+pygame.init()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+new_game = Game(SCREEN_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT)
+new_game.run_game_loop()
+
+pygame.quit()
+quit()
