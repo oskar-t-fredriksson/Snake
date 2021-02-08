@@ -27,7 +27,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     is_game_over = True
-            pygame.draw.rect(self.game_screen, [255, 255, 255], [400, 400, 100, 100])
+            pygame.draw.rect(self.game_screen, [255, 255, 255], [350, 350, 100, 100])
             pygame.display.update()
             clock.tick(self.TICK_RATE)
 
