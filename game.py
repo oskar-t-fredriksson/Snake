@@ -48,6 +48,10 @@ class Game:
         while not game_over:
             pygame.time.delay(50)
             clock.tick(self.TICK_RATE)
+            self.snake.move()
+            if self.snake.body[0].pos == self.snack.pos:
+                self.snake.add_segment()
+                self.snack = Cube(random_snack(self.ROWS, self.snake), self.snack_body)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     game_over = True
@@ -59,8 +63,9 @@ class Game:
         self.snack.draw(game_screen, False, True)
         pygame.display.update()
 
-    def collision(self):
-        pass
+    def collision(self, snake, snack):
+        snake = self.snake
+        snack = self.snack
 
 
 class Cube(object):
@@ -89,9 +94,9 @@ class Cube(object):
         if not head and not snack:
             pygame.draw.circle(game_screen, self.color, (round(dis * (i + 1 / 2)), round(dis * (j + 1 / 2))), dis // 2)
         elif snack and not head:
-            pygame.game_screen.blit(self.snack_body, (dis * i, dis * j))
+            pygame.Surface.blit(game_screen, self.snack_body, (dis * i, dis * j))
         elif head and not snack:
-            pygame.game_screen.blit(pygame.transform.rotate(self.snake_head, rotation), (dis * i, dis * j))
+            pygame.Surface.blit(game_screen, pygame.transform.rotate(self.snake_head, rotation), (dis * i, dis * j))
 
 
 class Snake(object):
@@ -146,13 +151,13 @@ class Snake(object):
                 if i == len(self.body) - 1:
                     self.turns.pop(p)
                 else:
-                    if segment.dnx == -1 and segment[0] <= 0:
+                    if segment.dnx == -1 and segment.pos[0] <= 0:
                         segment.pos = (segment.ROWS - 1, segment.pos[1])
-                    elif segment.dnx == 1 and segment[0] >= segment.ROWS - 1:
+                    elif segment.dnx == 1 and segment.pos[0] >= segment.ROWS - 1:
                         segment.pos = (0, segment.pos[1])
-                    elif segment.dny == 1 and segment[1] >= segment.ROWS - 1:
+                    elif segment.dny == 1 and segment.pos[1] >= segment.ROWS - 1:
                         segment.pos = (segment.pos[0], 0)
-                    elif segment.dny == -1 and segment[1] <= 0:
+                    elif segment.dny == -1 and segment.pos[1] <= 0:
                         segment.pos = (segment.pos[1], segment.ROWS - 1)
                     else:
                         segment.move(segment.dnx, segment.dny)
