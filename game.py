@@ -13,7 +13,7 @@ class Game:
     snake_head = pygame.image.load('assets/snake.png')
     snack_body = pygame.image.load('assets/snack.png')
     snack_body_scaled = pygame.transform.scale(snack_body,(40, 40))
-    snack = cube(randomSnack(rows, s), snack_body_scaled)
+    snack = Cube(randomSnack(rows, s), snack_body_scaled)
 
     game_over = False
 
