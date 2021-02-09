@@ -114,6 +114,9 @@ class Snake(object):
     # Move the snake
     def move(self):
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+
             keys = pygame.key.get_pressed()
 
             # Control the snake and save directions
@@ -150,17 +153,17 @@ class Snake(object):
                 segment.move(turn[0], turn[1])
                 if i == len(self.body) - 1:
                     self.turns.pop(p)
+            else:
+                if segment.dnx == -1 and segment.pos[0] <= 0:
+                    segment.pos = (segment.ROWS - 1, segment.pos[1])
+                elif segment.dnx == 1 and segment.pos[0] >= segment.ROWS - 1:
+                    segment.pos = (0, segment.pos[1])
+                elif segment.dny == 1 and segment.pos[1] >= segment.ROWS - 1:
+                    segment.pos = (segment.pos[0], 0)
+                elif segment.dny == -1 and segment.pos[1] <= 0:
+                    segment.pos = (segment.pos[1], segment.ROWS - 1)
                 else:
-                    if segment.dnx == -1 and segment.pos[0] <= 0:
-                        segment.pos = (segment.ROWS - 1, segment.pos[1])
-                    elif segment.dnx == 1 and segment.pos[0] >= segment.ROWS - 1:
-                        segment.pos = (0, segment.pos[1])
-                    elif segment.dny == 1 and segment.pos[1] >= segment.ROWS - 1:
-                        segment.pos = (segment.pos[0], 0)
-                    elif segment.dny == -1 and segment.pos[1] <= 0:
-                        segment.pos = (segment.pos[1], segment.ROWS - 1)
-                    else:
-                        segment.move(segment.dnx, segment.dny)
+                    segment.move(segment.dnx, segment.dny)
 
     # Reset the snake
     def reset(self, pos):
