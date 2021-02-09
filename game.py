@@ -58,7 +58,7 @@ class Game:
             self.redraw_window(self.game_screen)
 
     def redraw_window(self, game_screen):
-        game_screen.fill((0, 0, 0))
+        game_screen.fill((255, 255, 255))
         self.snake.draw(game_screen)
         self.snack.draw(game_screen, False, True)
         pygame.display.update()
@@ -92,7 +92,7 @@ class Cube(object):
         j = self.pos[1]
 
         if not head and not snack:
-            pygame.draw.circle(game_screen, self.color, (round(dis * (i + 1 / 2)), round(dis * (j + 1 / 2))), dis // 2)
+            pygame.draw.circle(game_screen, self.color, (round(dis * (i + 1 / 2)), round(dis * (j + 1 / 2))), dis // 4)
         elif snack and not head:
             pygame.Surface.blit(game_screen, self.snack_body, (dis * i, dis * j))
         elif head and not snack:
