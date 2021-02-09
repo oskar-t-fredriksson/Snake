@@ -1,4 +1,5 @@
 import pygame
+import random
 
 clock = pygame.time.Clock()
 
@@ -10,6 +11,8 @@ class Game:
     PLAY_AREA_Y = (50, 800)
     SCREEN_TITLE = 'SnakeSnack'
     snake_head = pygame.image.load('assets/snake.png')
+    snack_body = pygame.image.load('assets/snack.png')
+    snack = cube(randomSnack(rows, s), snack_body)
 
     game_over = False
 
@@ -50,9 +53,24 @@ class Game:
 class Cube(object):
     ROWS = 20
     SCREEN_WIDTH = Game.SCREEN_WIDTH
+    rotate = pygame.transform.rotate(snake_head, 90)
+    
+
 
 
 class Snake(object):
     body = []
 
+def randomSnack(rows, item):
 
+    positions = item.body
+
+    while True:
+        x = random.randrange(rows)
+        y = random.randrange(rows)
+        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0:
+            continue
+        else:
+            break
+
+    return (x,y)
