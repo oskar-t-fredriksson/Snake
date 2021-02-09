@@ -1,56 +1,62 @@
 import pygame
 
-pygame.font.init()
-title_font = pygame.font.Font('assets/Acadian_Runes-Regular_PERSONAL_USE.ttf', 60)
-font = pygame.font.Font('assets/Acadian_Runes-Regular_PERSONAL_USE.ttf', 40)
+class Menu:
+    pygame.font.init()
+    title_font = pygame.font.Font('assets/Acadian_Runes-Regular_PERSONAL_USE.ttf', 60)
+    font = pygame.font.Font('assets/Acadian_Runes-Regular_PERSONAL_USE.ttf', 40)
 
-SCREEN_HEIGHT = 800
-SCREEN_WIDTH = 800
-SCREEN_TITLE = 'SnakeSnack'
-menu_screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
+    SCREEN_HEIGHT = 800
+    SCREEN_WIDTH = 800
+    SCREEN_TITLE = 'SnakeSnack'
+    screen= pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
 
-def run_menu(): 
+    def __init__(self):   
+        self.menu_screen = self.screen
+        self.width = self.SCREEN_WIDTH
+        self.height = self.SCREEN_HEIGHT
+        self.play_button = pygame.Rect(self.width/2 - 200/2, self.height - 275, 200,50)
+        self.quit_button = pygame.Rect(self.width/2 - 200/2, self.height - 200, 200,50)
 
-    running = True
-    while running:
-       
-        play_button = pygame.Rect(SCREEN_WIDTH/2 - 200/2, SCREEN_HEIGHT - 275, 200,50)
-        quit_button = pygame.Rect(SCREEN_WIDTH/2 - 200/2, SCREEN_HEIGHT - 200, 200,50)
-        pygame.draw.rect(menu_screen, (26,175,96), play_button) 
-        pygame.draw.rect(menu_screen, (26,175,96), quit_button) 
-
-        screen_title_text = title_font.render(SCREEN_TITLE, True, ((26,175,96)))
-        high_scores_text = font.render('Highscores', True, ((255,255,255)))
-        play_text = font.render('Play', True, ((255,255,255)))
-        quit_text = font.render('Quit', True, ((255,255,255)))
-
-        menu_screen.blit(screen_title_text, (SCREEN_WIDTH/2 - (screen_title_text.get_rect().width / 2), 50))
-        menu_screen.blit(high_scores_text, (SCREEN_WIDTH/2 - (high_scores_text.get_rect().width / 2), 125))
-        menu_screen.blit(play_text, (play_button.x + int(play_button.width / 2) - int(play_text.get_rect().width/2), SCREEN_HEIGHT - 275 + 5 ))
-        menu_screen.blit(quit_text, (play_button.x + int(quit_button.width / 2) - int(quit_text.get_rect().width/2), SCREEN_HEIGHT - 200 + 5))
-
-        mouse_x, mouse_y = pygame.mouse.get_pos()
-
-        if play_button.collidepoint(mouse_x, mouse_y):
-            if click:
-                print('Play')
-                
-        if quit_button.collidepoint(mouse_x, mouse_y):
-            if click:            
-                pygame.quit()
-                
-        click = False
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    click = True
-          
-        #draw_menu()    
-        pygame.display.update()
-
+    def draw_menu(self):
+        pygame.draw.rect(self.menu_screen, (26,175,96), self.play_button) 
+        pygame.draw.rect(self.menu_screen, (26,175,96), self.quit_button) 
+        self.draw_text()       
+        
+    def draw_text(self):
+        title_text = self.title_font.render(self.SCREEN_TITLE, True, ((26,175,96)))
+        highscore_text = self.font.render('Highscores', True, ((255,255,255)))
+        play_text = self.font.render('Play', True, ((255,255,255)))
+        quit_text = self.font.render('Quit', True, ((255,255,255)))
+        self.menu_screen.blit(title_text, (self.width/2 - (title_text.get_rect().width / 2), 50))
+        self.menu_screen.blit(highscore_text, (self.width/2 - (highscore_text.get_rect().width / 2), 125))
+        self.menu_screen.blit(play_text, (self.play_button.x + int(self.play_button.width / 2) - int(play_text.get_rect().width/2), self.height - 275 + 5 ))
+        self.menu_screen.blit(quit_text, (self.quit_button.x + int(self.quit_button.width / 2) - int(quit_text.get_rect().width/2), self.height - 200 + 5 ))
     
+    def run_menu(self):
+        running = True
+        while running:                   
+            mouse_pos = pygame.mouse.get_pos()
+            if self.play_button.collidepoint(mouse_pos):
+                if click:
+                    print('Play')              
+            if self.quit_button.collidepoint(mouse_pos):
+                if click:            
+                    running = False
+
+            click = False      
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        click = True  
+
+            self.draw_menu()
+            pygame.display.update()
+
+
 pygame.init()
-run_menu()
+menu = Menu()
+menu.run_menu()
 pygame.quit()
+quit()
