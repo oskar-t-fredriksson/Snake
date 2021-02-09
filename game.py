@@ -44,8 +44,18 @@ class Game:
     def redraw_window(self):
         pass
 
-    def random_snack(self):
-        pass
+    def random_snack(rows, item):
+        positions = item.body
+
+        while True:
+            x = random.randrange(rows)
+            y = random.randrange(rows)
+            if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0:
+                continue
+            else:
+                break
+
+        return (x,y)
 
     def collision(self):
         pass
@@ -148,16 +158,3 @@ class Snake(object):
             else:
                 segment.draw(game_screen)
 
-def randomSnack(rows, item):
-
-    positions = item.body
-
-    while True:
-        x = random.randrange(rows)
-        y = random.randrange(rows)
-        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0:
-            continue
-        else:
-            break
-
-    return (x,y)
