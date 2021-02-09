@@ -40,20 +40,20 @@ class Game:
         self.game_screen.fill([0, 0, 0])
         self.snake = Snake(self.snake_head, (10, 10))
         self.snack = Cube(random_snack(self.ROWS, self.snake), self.snack_body)
+        self.speed = 0
         pygame.display.set_caption(self.title)
 
     def run_game_loop(self):
         game_over = False
-
+        self.snake.reset((10, 10))
         while not game_over:
-            pygame.time.delay(50)
-            clock.tick(self.TICK_RATE)
             self.snake.move()
             self.collision()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     game_over = True
             self.redraw_window(self.game_screen)
+            clock.tick(self.TICK_RATE)
 
     def redraw_window(self, game_screen):
         game_screen.fill((255, 255, 255))
@@ -115,7 +115,7 @@ class Snake(object):
         self.head = Cube(pos)
         self.body.append(self.head)
         self.dnx = 0
-        self.dny = 0
+        self.dny = 1
         self.rotation = 0
 
     # Move the snake
