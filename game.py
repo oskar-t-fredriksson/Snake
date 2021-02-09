@@ -49,9 +49,7 @@ class Game:
             pygame.time.delay(50)
             clock.tick(self.TICK_RATE)
             self.snake.move()
-            if self.snake.body[0].pos == self.snack.pos:
-                self.snake.add_segment()
-                self.snack = Cube(random_snack(self.ROWS, self.snake), self.snack_body)
+            self.collision()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     game_over = True
@@ -63,9 +61,18 @@ class Game:
         self.snack.draw(game_screen, False, True)
         pygame.display.update()
 
-    def collision(self, snake, snack):
+    def collision(self):
         snake = self.snake
         snack = self.snack
+        if snake.body[0].pos == snack.pos:
+            self.snake.add_segment()
+            self.snack = Cube(random_snack(self.ROWS, self.snake), self.snack_body)
+
+        for x in range(len(snake.body)):
+            if snake.body[x].pos in list(map(lambda z:z.pos,snake.body[x+1:])):
+                print('Score: ', len(snake.body))
+                self.snake.reset((10, 10))
+                break
 
 
 class Cube(object):
@@ -92,7 +99,7 @@ class Cube(object):
         j = self.pos[1]
 
         if not head and not snack:
-            pygame.draw.circle(game_screen, self.color, (round(dis * (i + 1 / 2)), round(dis * (j + 1 / 2))), dis // 4)
+            pygame.draw.circle(game_screen, self.color, (round(dis * (i + 1 / 2)), round(dis * (j + 1 / 2))), dis // 2 - 5)
         elif snack and not head:
             pygame.Surface.blit(game_screen, self.snack_body, (dis * i, dis * j))
         elif head and not snack:
