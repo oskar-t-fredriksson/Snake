@@ -13,7 +13,7 @@ class Game:
     snake_head = pygame.image.load('assets/snake.png')
     snack_body = pygame.image.load('assets/snack.png')
     snack_body_scaled = pygame.transform.scale(snack_body,(40, 40))
-    snack = cube(randomSnack(rows, s), snack_body_scaled)
+    snack = cube(random_snack(rows, s), snack_body_scaled)
 
     game_over = False
 
@@ -44,8 +44,18 @@ class Game:
     def redraw_window(self):
         pass
 
-    def random_snack(self):
-        pass
+    def random_snack(rows, item):
+        positions = item.body
+
+        while True:
+            x = random.randrange(rows)
+            y = random.randrange(rows)
+            if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0:
+                continue
+            else:
+                break
+
+        return (x,y)
 
     def collision(self):
         pass
@@ -61,17 +71,3 @@ class Cube(object):
 
 class Snake(object):
     body = []
-
-def randomSnack(rows, item):
-
-    positions = item.body
-
-    while True:
-        x = random.randrange(rows)
-        y = random.randrange(rows)
-        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0:
-            continue
-        else:
-            break
-
-    return (x,y)
