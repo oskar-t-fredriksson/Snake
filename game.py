@@ -15,7 +15,6 @@ def random_snack(rows, item):
             continue
         else:
             break
-
     return x, y
 
 
@@ -47,13 +46,12 @@ class Game:
         pygame.display.set_caption(self.title)
 
     def run_game_loop(self):
-        game_over = False
 
         self.snake.reset((10, 10))
-        while not game_over:
+        while not self.game_over:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    game_over = True
+                    self.game_over = True
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                     self.paused = not self.paused
             if not self.paused:
@@ -80,6 +78,7 @@ class Game:
             if snake.body[x].pos in list(map(lambda z:z.pos,snake.body[x+1:])):
                 print('Score: ', len(snake.body))
                 self.snake.reset((10, 10))
+                self.game_over = True
                 break
 
 
@@ -122,14 +121,13 @@ class Snake(object):
         self.sprite = sprite
         self.head = Cube(pos)
         self.body.append(self.head)
-        self.dnx = 0
-        self.dny = 1
-        self.rotation = 0
+        self.dnx = -1
+        self.dny = 0
+        self.rotation = 90
 
     # Move the snake
     def move(self):
         keys = pygame.key.get_pressed()
-
         # Control the snake
         for key in keys:
             if keys[pygame.K_LEFT]:
@@ -181,9 +179,11 @@ class Snake(object):
         self.head = Cube(pos)
         self.body = []
         self.body.append(self.head)
+        self.rotation = 90
         self.turns = {}
-        self.dnx = 0
-        self.dny = 1
+        self.dnx = -1
+        self.dny = 0
+        Game.paused = True
 
     # Add segment to snake
     def add_segment(self):
