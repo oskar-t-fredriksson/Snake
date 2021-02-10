@@ -22,7 +22,7 @@ def random_snack(rows, item):
 class Game:
     TICK_RATE = 10
     SCREEN_WIDTH = 800
-    SCREEN_HEIGHT = 850
+    SCREEN_HEIGHT = 800
     PLAY_AREA_Y = (50, 800)
     ROWS = 20
     SCREEN_TITLE = 'SnakeSnack'
@@ -30,6 +30,7 @@ class Game:
     snack_body_file = pygame.image.load('assets/snack.png')
     snake_head = pygame.transform.scale(snake_head_file, (40, 40))
     snack_body = pygame.transform.scale(snack_body_file, (40, 40))
+    paused = True
 
     game_over = False
 
@@ -47,13 +48,18 @@ class Game:
 
     def run_game_loop(self):
         game_over = False
+
         self.snake.reset((10, 10))
         while not game_over:
-            self.snake.move()
-            self.collision()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     game_over = True
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
+                    self.paused = not self.paused
+            if not self.paused:
+                self.snake.move()
+                self.collision()
+
             self.redraw_window(self.game_screen)
             clock.tick(self.TICK_RATE)
 
@@ -122,37 +128,33 @@ class Snake(object):
 
     # Move the snake
     def move(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
+        keys = pygame.key.get_pressed()
 
-            keys = pygame.key.get_pressed()
+        # Control the snake
+        for key in keys:
+            if keys[pygame.K_LEFT]:
+                self.dnx = -1
+                self.dny = 0
+                self.turns[self.head.pos[:]] = [self.dnx, self.dny]
+                self.rotation = 270
 
-            # Control the snake and save directions
-            for key in keys:
-                if keys[pygame.K_LEFT]:
-                    self.dnx = -1
-                    self.dny = 0
-                    self.turns[self.head.pos[:]] = [self.dnx, self.dny]
-                    self.rotation = 270
+            if keys[pygame.K_RIGHT]:
+                self.dnx = 1
+                self.dny = 0
+                self.turns[self.head.pos[:]] = [self.dnx, self.dny]
+                self.rotation = 90
 
-                if keys[pygame.K_RIGHT]:
-                    self.dnx = 1
-                    self.dny = 0
-                    self.turns[self.head.pos[:]] = [self.dnx, self.dny]
-                    self.rotation = 90
+            if keys[pygame.K_UP]:
+                self.dnx = 0
+                self.dny = -1
+                self.turns[self.head.pos[:]] = [self.dnx, self.dny]
+                self.rotation = 180
 
-                if keys[pygame.K_UP]:
-                    self.dnx = 0
-                    self.dny = -1
-                    self.turns[self.head.pos[:]] = [self.dnx, self.dny]
-                    self.rotation = 180
-
-                if keys[pygame.K_DOWN]:
-                    self.dnx = 0
-                    self.dny = 1
-                    self.turns[self.head.pos[:]] = [self.dnx, self.dny]
-                    self.rotation = 0
+            if keys[pygame.K_DOWN]:
+                self.dnx = 0
+                self.dny = 1
+                self.turns[self.head.pos[:]] = [self.dnx, self.dny]
+                self.rotation = 0
 
         # Delete last segment and change positions
         for i, segment in enumerate(self.body):
@@ -170,7 +172,7 @@ class Snake(object):
                 elif segment.dny == 1 and segment.pos[1] >= segment.ROWS - 1:
                     segment.pos = (segment.pos[0], 0)
                 elif segment.dny == -1 and segment.pos[1] <= 0:
-                    segment.pos = (segment.pos[0], segment.ROWS - 1
+                    segment.pos = (segment.pos[0], segment.ROWS - 1)
                 else:
                     segment.move(segment.dnx, segment.dny)
 
