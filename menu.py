@@ -34,14 +34,7 @@ class Menu:
     
     def run_menu(self):
         running = True
-        while running:                   
-            mouse_pos = pygame.mouse.get_pos()
-            if self.play_button.collidepoint(mouse_pos):
-                if click:
-                    print('Play')              
-            if self.quit_button.collidepoint(mouse_pos):
-                if click:            
-                    running = False
+        while running:    
 
             click = False      
             for event in pygame.event.get():
@@ -50,6 +43,14 @@ class Menu:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         click = True  
+
+            mouse_pos = pygame.mouse.get_pos()
+            if self.play_button.collidepoint(mouse_pos):
+                if click:
+                    print('Play')              
+            if self.quit_button.collidepoint(mouse_pos):
+                if click:            
+                    running = False
 
             self.draw_menu()
             pygame.display.update()
