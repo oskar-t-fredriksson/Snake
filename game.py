@@ -168,7 +168,7 @@ class Snake(object):
                 elif segment.dny == 1 and segment.pos[1] >= segment.ROWS - 1:
                     segment.pos = (segment.pos[0], 0)
                 elif segment.dny == -1 and segment.pos[1] <= 0:
-                    segment.pos = (segment.pos[1], segment.ROWS - 1)
+                    segment.pos = (segment.pos[0], segment.ROWS - 1)
                 else:
                     segment.move(segment.dnx, segment.dny)
 
