@@ -43,17 +43,18 @@ class Game:
         self.snack = Cube(random_snack(self.ROWS, self.snake), self.snack_body)
         self.speed = 0
         self.menu = Menu()
+        self.game_over = False
         pygame.display.set_caption(self.title)
 
     def run_game_loop(self):
-        game_over = False
+        # game_over = False
         self.snake.reset((10, 10))
-        while not game_over:
+        while not self.game_over:
             self.snake.move()
             self.collision()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    game_over = True
+                    self.game_over = True
             self.redraw_window(self.game_screen)
             clock.tick(self.TICK_RATE)
 
@@ -73,6 +74,7 @@ class Game:
         for x in range(len(snake.body)):
             if snake.body[x].pos in list(map(lambda z:z.pos,snake.body[x+1:])):
                 print('Score: ', len(snake.body))
+                self.menu.run_menu()                
                 self.snake.reset((10, 10))
                 break
 

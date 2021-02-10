@@ -76,6 +76,7 @@ class Menu:
                 if click:            
                     pygame.quit()
 
+            self.menu_screen.fill((0,0,0))
             self.draw_menu()
             pygame.display.update()
 
