@@ -1,5 +1,6 @@
 import pygame
 import random
+from menu import *
 
 clock = pygame.time.Clock()
 
@@ -41,6 +42,7 @@ class Game:
         self.snake = Snake(self.snake_head, (10, 10))
         self.snack = Cube(random_snack(self.ROWS, self.snake), self.snack_body)
         self.speed = 0
+        self.menu = Menu()
         pygame.display.set_caption(self.title)
 
     def run_game_loop(self):

@@ -14,6 +14,7 @@ class Menu:
         self.menu_screen = self.screen
         self.width = self.SCREEN_WIDTH
         self.height = self.SCREEN_HEIGHT
+        self.running = True
         self.play_button = pygame.Rect(self.width/2 - 200/2, self.height - 275, 200,50)
         self.quit_button = pygame.Rect(self.width/2 - 200/2, self.height - 200, 200,50)
 
@@ -39,7 +40,7 @@ class Menu:
             click = False      
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    pygame.quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         click = True  
@@ -47,17 +48,16 @@ class Menu:
             mouse_pos = pygame.mouse.get_pos()
             if self.play_button.collidepoint(mouse_pos):
                 if click:
-                    print('Play')              
+                    running = False
             if self.quit_button.collidepoint(mouse_pos):
                 if click:            
-                    running = False
+                    pygame.quit()
 
             self.draw_menu()
             pygame.display.update()
 
 
-pygame.init()
-menu = Menu()
-menu.run_menu()
-pygame.quit()
-quit()
+# pygame.init()
+# menu = Menu()
+# menu.run_menu()
+# pygame.quit()
