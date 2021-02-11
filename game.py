@@ -22,7 +22,7 @@ class Game:
     TICK_RATE = 10
     SCREEN_WIDTH = 800
     SCREEN_HEIGHT = 800
-    PLAY_AREA_Y = (50, 800)
+    PLAY_AREA_Y = (50, 850)
     ROWS = 20
     SCREEN_TITLE = 'SnakeSnack'
     snake_head_file = pygame.image.load('assets/snake.png')
@@ -63,7 +63,7 @@ class Game:
             clock.tick(self.TICK_RATE)
 
     def redraw_window(self, game_screen):
-        game_screen.fill((255, 255, 255))
+        game_screen.fill((59, 149, 191))
         self.snake.draw(game_screen)
         self.snack.draw(game_screen, False, True)
         pygame.display.update()
