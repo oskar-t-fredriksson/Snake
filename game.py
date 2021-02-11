@@ -64,7 +64,6 @@ class Game:
                 self.snake.move()
                 self.collision()
 
-            menu.Menu.uscore = self.score
             self.redraw_window(self.game_screen)
             clock.tick(self.TICK_RATE)
 
