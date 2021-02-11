@@ -12,19 +12,42 @@ class Menu:
     SCREEN_WIDTH = 800
     SCREEN_TITLE = 'SnakeSnack'
     screen= pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
+    uname = ''
 
-    def __init__(self):   
+    def __init__(self):
+        self.uname = self.uname
         self.menu_screen = self.screen
         self.width = self.SCREEN_WIDTH
         self.height = self.SCREEN_HEIGHT
         self.play_button = pygame.Rect(self.width/2 - 200/2, self.height - 275, 200,50)
         self.quit_button = pygame.Rect(self.width/2 - 200/2, self.height - 200, 200,50)
+        
+    def username(self):
+        events = pygame.event.get()
+        for e in events:
+            if e.type == pygame.KEYDOWN: #kommer inte förbi här
+                if e.key == pygame.K_BACKSPACE:
+                    self.uname =  self.uname[:-1]
+                    
+                else:
+                    pygame.key.set_repeat(1 , 70)
+                    self.uname += e.unicode
+                    
+                    
+        uinput = self.smallfont.render(self.uname, True, (255,255,255))
+        self.menu_screen.blit(uinput, (225, 450))
+        print(self.uname)
 
     def draw_menu(self):
+        #self.screen.fill((0,25,0))
+        pygame.draw.rect(self.menu_screen, (255,255,255), pygame.Rect(200, 428, 400, 75), 2)
         pygame.draw.rect(self.menu_screen, (255,255,255), pygame.Rect(200, 180, 400, 250), 2)
-        pygame.draw.rect(self.menu_screen, (26,175,96), self.play_button) 
-        pygame.draw.rect(self.menu_screen, (26,175,96), self.quit_button) 
+        pygame.draw.rect(self.menu_screen, (26,175,96), self.play_button)
+        pygame.draw.rect(self.menu_screen, (26,175,96), self.quit_button)
+        self.username()
         self.draw_text()
+
+    
 
     def load_score():
         readfile = open('./assets/scores.json',)
@@ -56,8 +79,10 @@ class Menu:
                     x += 40
     
     def run_menu(self):
+        clock = pygame.time.Clock()
         running = True
-        while running:                   
+        while running:   
+            clock.tick(60)
             mouse_pos = pygame.mouse.get_pos()
             if self.play_button.collidepoint(mouse_pos):
                 if click:
@@ -72,9 +97,11 @@ class Menu:
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
-                        click = True  
-
+                        click = True
+            
+            self.screen.fill((0,25,0))
             self.draw_menu()
+            
             pygame.display.update()
 
 def save_score(score_board):
@@ -86,6 +113,10 @@ def load_score():
     score_board = json.load(readfile)
     readfile.close()
     return score_board
+
+            
+
+
 
 pygame.init()
 menu = Menu()
