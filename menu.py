@@ -21,29 +21,27 @@ class Menu:
         self.running = True
         self.play_button = pygame.Rect(self.width / 2 - 200 / 2, self.height - 275, 200, 50)
         self.quit_button = pygame.Rect(self.width / 2 - 200 / 2, self.height - 200, 200, 50)
-    
-    def username(self):
-        events = pygame.event.get()
-        for e in events:
-            if e.type == pygame.KEYDOWN: #kommer inte förbi här
-                if e.key == pygame.K_BACKSPACE:
-                    self.uname =  self.uname[:-1]
-                    
-                else:
-                    pygame.key.set_repeat(1 , 70)
-                    self.uname += e.unicode
-                    
-                    
-        uinput = self.smallfont.render(self.uname, True, (255,255,255))
-        self.menu_screen.blit(uinput, (225, 450))
-        print(self.uname)
+        self.uinput = self.smallfont.render(self.uname + '_', True, (255, 255, 255))
+
+    def username(self, events):
+        e = events
+        if e.type == pygame.KEYDOWN:  # kommer inte förbi här
+            if e.key == pygame.K_BACKSPACE:
+                self.uname = self.uname[:-1]
+
+            else:
+                pygame.key.set_repeat(500, 10)
+                self.uname += e.unicode
+
+        self.uinput = self.smallfont.render(self.uname + '_', True, (255, 255, 255))
+
 
     def draw_menu(self):
-        pygame.draw.rect(self.menu_screen, (255,255,255), pygame.Rect(200, 428, 400, 75), 2)
+        pygame.draw.rect(self.menu_screen, (255, 255, 255), pygame.Rect(200, 428, 400, 75), 2)
         pygame.draw.rect(self.menu_screen, (255, 255, 255), pygame.Rect(200, 180, 400, 250), 2)
         pygame.draw.rect(self.menu_screen, (26, 175, 96), self.play_button)
         pygame.draw.rect(self.menu_screen, (26, 175, 96), self.quit_button)
-        self.username()
+        self.menu_screen.blit(self.uinput, (225, 450))
         self.draw_text()
 
     def load_score(self):
@@ -63,11 +61,11 @@ class Menu:
         self.menu_screen.blit(title_text, (self.width / 2 - (title_text.get_rect().width / 2), 50))
         self.menu_screen.blit(highscore_text, (self.width / 2 - (highscore_text.get_rect().width / 2), 125))
         self.menu_screen.blit(play_text, (
-        self.play_button.x + int(self.play_button.width / 2) - int(play_text.get_rect().width / 2),
-        self.height - 275 + 5))
+            self.play_button.x + int(self.play_button.width / 2) - int(play_text.get_rect().width / 2),
+            self.height - 275 + 5))
         self.menu_screen.blit(quit_text, (
-        self.quit_button.x + int(self.quit_button.width / 2) - int(quit_text.get_rect().width / 2),
-        self.height - 200 + 5))
+            self.quit_button.x + int(self.quit_button.width / 2) - int(quit_text.get_rect().width / 2),
+            self.height - 200 + 5))
 
         lst = {key: value for key, value in sorted(score_board.items(), key=lambda item: item[1], reverse=True)}
         for item in lst:
@@ -90,6 +88,8 @@ class Menu:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         click = True
+                else:
+                    self.username(event)
 
             mouse_pos = pygame.mouse.get_pos()
             if self.play_button.collidepoint(mouse_pos):
@@ -99,7 +99,7 @@ class Menu:
                 if click:
                     pygame.quit()
 
-            self.menu_screen.fill((0,0,0))
+            self.menu_screen.fill((0, 0, 0))
             self.draw_menu()
             pygame.display.update()
 
