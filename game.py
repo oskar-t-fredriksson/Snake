@@ -26,7 +26,7 @@ class Game:
     ROWS = 20
     SCREEN_TITLE = 'SnakeSnack'
     snake_head_file = pygame.image.load('assets/snake.png')
-    snack_body_file = pygame.image.load('assets/snack.png')
+    snack_body_file = pygame.image.load('assets/fish.png')
     snake_head = pygame.transform.scale(snake_head_file, (40, 40))
     snack_body = pygame.transform.scale(snack_body_file, (40, 40))
     paused = True
