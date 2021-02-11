@@ -53,7 +53,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.game_over = True
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
+                if event.type == pygame.KEYDOWN and (event.key == pygame.K_p or event.key == pygame.K_SPACE):
                     self.paused = not self.paused
             if not self.paused:
                 self.snake.move()
@@ -76,7 +76,7 @@ class Game:
             self.snack = Cube(random_snack(self.ROWS, self.snake), self.snack_body)
 
         for x in range(len(snake.body)):
-            if snake.body[x].pos in list(map(lambda z:z.pos,snake.body[x+1:])):
+            if snake.body[x].pos in list(map(lambda z: z.pos, snake.body[x + 1:])):
                 print('Score: ', len(snake.body))
                 self.snake.reset((10, 10))
                 self.game_over = True
@@ -107,7 +107,8 @@ class Cube(object):
         j = self.pos[1]
 
         if not head and not snack:
-            pygame.draw.circle(game_screen, self.color, (round(dis * (i + 1 / 2)), round(dis * (j + 1 / 2))), dis // 2 - 5)
+            pygame.draw.circle(game_screen, self.color, (round(dis * (i + 1 / 2)), round(dis * (j + 1 / 2))),
+                               dis // 2 - 5)
         elif snack and not head:
             pygame.Surface.blit(game_screen, self.snack_body, (dis * i, dis * j))
         elif head and not snack:
