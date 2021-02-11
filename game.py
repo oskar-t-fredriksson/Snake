@@ -46,7 +46,8 @@ class Game:
         pygame.display.set_caption(self.title)
 
     def run_game_loop(self):
-
+        self.game_over = False
+        self.paused = True
         self.snake.reset((10, 10))
         while not self.game_over:
             for event in pygame.event.get():
@@ -183,7 +184,6 @@ class Snake(object):
         self.turns = {}
         self.dnx = -1
         self.dny = 0
-        Game.paused = True
 
     # Add segment to snake
     def add_segment(self):
