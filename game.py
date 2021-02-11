@@ -30,6 +30,8 @@ class Game:
     snake_head = pygame.transform.scale(snake_head_file, (40, 40))
     snack_body = pygame.transform.scale(snack_body_file, (40, 40))
     paused = True
+    score_font = pygame.font.Font('assets/Acadian_Runes-Regular_PERSONAL_USE.ttf', 35)
+    score = 0
 
     game_over = False
 
@@ -66,6 +68,7 @@ class Game:
         game_screen.fill((59, 149, 191))
         self.snake.draw(game_screen)
         self.snack.draw(game_screen, False, True)
+        self.show_score()
         pygame.display.update()
 
     def collision(self):
@@ -74,13 +77,17 @@ class Game:
         if snake.body[0].pos == snack.pos:
             self.snake.add_segment()
             self.snack = Cube(random_snack(self.ROWS, self.snake), self.snack_body)
+            self.score += 1
 
         for x in range(len(snake.body)):
             if snake.body[x].pos in list(map(lambda z: z.pos, snake.body[x + 1:])):
-                print('Score: ', len(snake.body))
                 self.snake.reset((10, 10))
                 self.game_over = True
                 break
+
+    def show_score(self):
+        score = self.score_font.render("Score: " + str(self.score), True, (255, 255, 255))
+        self.game_screen.blit(score, (0, 0))
 
 
 class Cube(object):
@@ -118,6 +125,7 @@ class Cube(object):
 class Snake(object):
     body = []
     turns = {}
+    score = 0
 
     def __init__(self, sprite, pos):
         self.sprite = sprite
@@ -201,6 +209,8 @@ class Snake(object):
 
         self.body[-1].dnx = dx
         self.body[-1].dny = dy
+        self.score += 1
+        print(self.score)
 
     # Draw the snake
     def draw(self, game_screen):
