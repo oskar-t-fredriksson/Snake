@@ -210,7 +210,6 @@ class Snake(object):
         self.body[-1].dnx = dx
         self.body[-1].dny = dy
         self.score += 1
-        print(self.score)
 
     # Draw the snake
     def draw(self, game_screen):

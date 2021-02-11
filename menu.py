@@ -35,7 +35,6 @@ class Menu:
 
         self.uinput = self.smallfont.render(self.uname + '_', True, (255, 255, 255))
 
-
     def draw_menu(self):
         pygame.draw.rect(self.menu_screen, (255, 255, 255), pygame.Rect(200, 428, 400, 75), 2)
         pygame.draw.rect(self.menu_screen, (255, 255, 255), pygame.Rect(200, 180, 400, 250), 2)
@@ -67,15 +66,13 @@ class Menu:
             self.quit_button.x + int(self.quit_button.width / 2) - int(quit_text.get_rect().width / 2),
             self.height - 200 + 5))
 
-        lst = {key: value for key, value in sorted(score_board.items(), key=lambda item: item[1], reverse=True)}
-        for item in lst:
-            for keys, values in score_board.items():
-                if keys is item:
-                    score = self.smallfont.render(keys, True, (255, 255, 255))
-                    points = self.smallfont.render(str(values), True, (255, 255, 255))
-                    self.menu_screen.blit(score, (220, x))
-                    self.menu_screen.blit(points, (535, x))
-                    x += 40
+        score_board.sort(key=lambda x: x.get('score'), reverse=True)
+        for i in range(len(score_board)):
+                score = self.smallfont.render(score_board[i].get('name'), True, (255, 255, 255))
+                points = self.smallfont.render(str(score_board[i].get('score')), True, (255, 255, 255))
+                self.menu_screen.blit(score, (220, x))
+                self.menu_screen.blit(points, (535, x))
+                x += 40
 
     def run_menu(self):
         running = True
