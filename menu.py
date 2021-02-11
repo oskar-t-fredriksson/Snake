@@ -12,7 +12,7 @@ class Menu:
     SCREEN_WIDTH = 800
     SCREEN_TITLE = 'SnakeSnack'
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    uname = ''
+    uname = 'Snek'
     uscore = 0
 
     def __init__(self):
@@ -30,8 +30,6 @@ class Menu:
         if e.type == pygame.KEYDOWN:
             if e.key == pygame.K_BACKSPACE:
                 self.uname = self.uname[:-1]
-            if e.key == pygame.K_RETURN:
-                return self.uname
             else:
                 pygame.key.set_repeat(500, 10)
                 self.uname += e.unicode
