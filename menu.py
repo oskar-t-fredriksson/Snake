@@ -68,11 +68,11 @@ class Menu:
 
         score_board.sort(key=lambda x: x.get('score'), reverse=True)
         for i in range(len(score_board)):
-                score = self.smallfont.render(score_board[i].get('name'), True, (255, 255, 255))
-                points = self.smallfont.render(str(score_board[i].get('score')), True, (255, 255, 255))
-                self.menu_screen.blit(score, (220, x))
-                self.menu_screen.blit(points, (535, x))
-                x += 40
+            score = self.smallfont.render(score_board[i].get('name'), True, (255, 255, 255))
+            points = self.smallfont.render(str(score_board[i].get('score')), True, (255, 255, 255))
+            self.menu_screen.blit(score, (220, x))
+            self.menu_screen.blit(points, (535, x))
+            x += 40
 
     def run_menu(self):
         running = True
