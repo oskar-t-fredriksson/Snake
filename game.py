@@ -1,5 +1,6 @@
 import pygame
 import random
+import menu
 from menu import *
 
 clock = pygame.time.Clock()
@@ -51,6 +52,8 @@ class Game:
         self.game_over = False
         self.paused = True
         self.snake.reset((10, 10))
+        self.score = 0
+
         while not self.game_over:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -61,8 +64,16 @@ class Game:
                 self.snake.move()
                 self.collision()
 
+            menu.Menu.uscore = self.score
             self.redraw_window(self.game_screen)
             clock.tick(self.TICK_RATE)
+
+        high_score = menu.load_score()
+        high_score.sort(key=lambda x: x.get('score'), reverse=True)
+        if self.score > high_score[-1].get('score'):
+            high_score.pop(-1)
+            high_score.append({'name': self.menu.uname, 'score': self.score})
+        menu.save_score(high_score)
 
     def redraw_window(self, game_screen):
         game_screen.fill((59, 149, 191))

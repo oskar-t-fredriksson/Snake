@@ -13,6 +13,7 @@ class Menu:
     SCREEN_TITLE = 'SnakeSnack'
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     uname = ''
+    uscore = 0
 
     def __init__(self):
         self.menu_screen = self.screen
@@ -22,16 +23,19 @@ class Menu:
         self.play_button = pygame.Rect(self.width / 2 - 200 / 2, self.height - 275, 200, 50)
         self.quit_button = pygame.Rect(self.width / 2 - 200 / 2, self.height - 200, 200, 50)
         self.uinput = self.smallfont.render(self.uname + '_', True, (255, 255, 255))
+        self.score_board = load_score()
 
     def username(self, events):
         e = events
-        if e.type == pygame.KEYDOWN:  # kommer inte förbi här
+        if e.type == pygame.KEYDOWN:
             if e.key == pygame.K_BACKSPACE:
                 self.uname = self.uname[:-1]
-
+            if e.key == pygame.K_RETURN:
+                return self.uname
             else:
                 pygame.key.set_repeat(500, 10)
                 self.uname += e.unicode
+                print(self.uname)
 
         self.uinput = self.smallfont.render(self.uname + '_', True, (255, 255, 255))
 
@@ -51,7 +55,7 @@ class Menu:
 
     def draw_text(self):
         x = 187
-        score_board = load_score()
+        self.score_board = load_score()
 
         title_text = self.title_font.render(self.SCREEN_TITLE, True, ((26, 175, 96)))
         highscore_text = self.font.render('Highscores', True, ((255, 255, 255)))
@@ -66,10 +70,10 @@ class Menu:
             self.quit_button.x + int(self.quit_button.width / 2) - int(quit_text.get_rect().width / 2),
             self.height - 200 + 5))
 
-        score_board.sort(key=lambda x: x.get('score'), reverse=True)
-        for i in range(len(score_board)):
-            score = self.smallfont.render(score_board[i].get('name'), True, (255, 255, 255))
-            points = self.smallfont.render(str(score_board[i].get('score')), True, (255, 255, 255))
+        self.score_board.sort(key=lambda x: x.get('score'), reverse=True)
+        for i in range(len(self.score_board)):
+            score = self.smallfont.render(self.score_board[i].get('name'), True, (255, 255, 255))
+            points = self.smallfont.render(str(self.score_board[i].get('score')), True, (255, 255, 255))
             self.menu_screen.blit(score, (220, x))
             self.menu_screen.blit(points, (535, x))
             x += 40
